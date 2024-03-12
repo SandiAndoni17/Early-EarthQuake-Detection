@@ -1,5 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
+
+session = requests.Session()
+session.headers.update({
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36"
+})
 def ekstraksi_data():
     """
     Tanggal :17 Februari 2024
@@ -12,11 +17,13 @@ def ekstraksi_data():
     :return:
     """
     url = 'https://www.bmkg.go.id/'
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0"}
-    content = requests.get(url, headers)
-    print(content.status_code)
-    soup = BeautifulSoup(content.content, 'html.parser')
+    # headers = {
+    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0"}
+    url = 'https://www.bmkg.go.id/'  # Sesuaikan URL
+    response = session.get(url)
+
+    print(response.status_code)
+    soup = BeautifulSoup(response.content, 'html.parser')
     print(soup.prettify())
 
     hasil = dict()
@@ -37,3 +44,4 @@ def tampilkan_data(result):
     print(f"Lokasi :LS= {result['lokasi']['ls']},BT= {result['lokasi']['bt']}")
     print(f"Pusat {result['pusat']}")
     print(f"Dirasakan {result['dirasakan']}")
+
