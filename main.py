@@ -30,7 +30,7 @@ def tampilkan_data(result):
     print(f"Magnitudo {result['magnitudo']}")
     print(f"Lokasi :LS= {result['lokasi']['ls']},BT= {result['lokasi']['bt']}")
     print(f"Pusat {result['pusat']}")
-    print(f"Dirasakane {result['dirasakan']}")
+    print(f"Dirasaekan {result['dirasakan']}")
 
 if __name__ == '__main__':
 
