@@ -16,20 +16,50 @@ def ekstraksi_data():
     Dirasakan : Dirasakan (Skala MMI): III Banyuwangi, III Jembrana
     :return:
     """
-    url = 'https://www.bmkg.go.id/'
+    try:
+
     # headers = {
     #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:97.0) Gecko/20100101 Firefox/97.0"}
-    url = 'https://www.bmkg.go.id/'  # Sesuaikan URL
-    response = session.get(url)
+      # Sesuaikan URL
+        content = session.get('https://www.bmkg.go.id/')
+    except Exception:
+        return None
 
-    print(response.status_code)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    print(soup.prettify())
+    if content.status_code == 200:
+        soup = BeautifulSoup(content.text, 'html.parser')
+        result = soup.find('span',{'class':'waktu'})
+        result = result.text.split(', ')
+        tanggal = result[0]
+        waktu = result[1]
+
+        result = soup.find('div', {'class':'col-md-6 col-xs-6 gempabumi-detail no-padding'})
+        result = result.findChildren('li')
+        i = 0
+        magnitudo = None
+        ls = None
+        bt = None
+        pusat = None
+        dirasakan = None
+
+
+
+        for res in result:
+            print(i, res)
+            if i == 1:
+                magnitudo = res.text
+            i = i+1
+
+
+    # print(response.status_code)
+    # soup = BeautifulSoup(response.content, 'html.'parser')
+    # print(soup.prettify())
 
     hasil = dict()
-    hasil['tanggal'] = '17 Februari 2024'
-    hasil ['waktu'] =  '23:47:28 WIB'
-    hasil ['magnitudo'] =  '4.1 MMI'
+    hasil['tanggal'] = tanggal
+    hasil ['waktu'] =  waktu
+
+
+    hasil ['magnitudo'] =  magnitudo
     hasil ['lokasi'] = {'ls':8.38, 'bt':114.49 }
     hasil['pusat'] = 'Pusat gempa berada dilaut 12 km BaratDaya Jembrana'
     hasil['dirasakan'] = 'Dirasakan (Skala MMI): III Banyuwangi, III Jembrana'
